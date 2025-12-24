@@ -10,14 +10,14 @@ export default function Menu(): JSX.Element {
             {menu.map((item: Pizza): JSX.Element =>
                     <div className="w-80 h-120 bg-white rounded-xl flex flex-col shadow-md
                     transition delay-150 duration-300 ease-in-out hover:-translate-y-1 hover:scale-110" key={item.id}>
-                        <img src={item.photo} alt="Pizza Photo" className="p-4 rounded-t-xl"/>
+                        <img src={item.photo1} alt="Pizza Photo" className="p-4 rounded-t-xl"/>
                         <div className="w-full h-full rounded-b-xl px-4 flex flex-col gap-2 items-center font-medium">
                             <h1 className="-mt-4 text-xl">{item.name}</h1>
                             <p className="text-neutral-500 opacity-75">{item.ingredients}</p>
                             <p className="place-self-end">from <span className="text-xl">{item.price}₽</span></p>
                             <button onClick={() => setOpenMoreInfo(item.id)}
-                                className="mt-2 bg-red-400 text-white font-medium rounded-2xl w-1/3 h-8 cursor-pointer
-                                place-self-start hover:bg-red-700">Choose</button>
+                                className="mt-2 bg-red-700 text-white rounded-full w-1/3 h-8 cursor-pointer
+                                place-self-start hover:bg-red-800">Choose</button>
                         </div>
                     </div>
             )}
