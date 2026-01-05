@@ -2,6 +2,8 @@ import {type JSX, useState} from "react"
 import {IoClose} from "react-icons/io5";
 import type {Ingredient, Pizza} from "../../menu.ts"
 import {ingredients, menu} from "../../menu.ts";
+import {useDispatch} from "react-redux";
+import {addItem} from "../../features/cart/cartSlice.ts";
 
 type PizzaCardProps = {
     closeInfo: (value: number) => void
@@ -10,10 +12,11 @@ type PizzaCardProps = {
 
 export default function PizzaCard({closeInfo, pizzaId}: PizzaCardProps): JSX.Element {
 
+    const dispatch = useDispatch()
+
     const [chosenSize, setChosenSize] = useState<PizzaSizeWeight>({size: "XL", weight: 850})
     const [chosenCrust, setChosenCrust] = useState<string>("Thick")
     const [chosenExtra, setChosenExtra] = useState<string[]>([])
-    console.log(chosenExtra)
 
     type PizzaSizeWeight = {
         size: string
@@ -54,6 +57,18 @@ export default function PizzaCard({closeInfo, pizzaId}: PizzaCardProps): JSX.Ele
                             chosenCrust === "Thin" || (chosenSize.size === "M" || chosenSize.size === "S") ? el?.name !== "Cheese crust" : el)
                             .map((el: Ingredient | undefined): number => el?.price ?? 0)
                         return pricesArray.reduce((acc: number, val: number): number => acc + val, 0)
+                    }
+
+                    function handleAddToCart() {
+                        const itemToAdd = {
+                            id: item.id,
+                            name: item.name,
+                            photo: item.photo1,
+                            price: changePrice() + countExtras(),
+                            quantity: 1
+                        }
+                        dispatch(addItem(itemToAdd))
+                        console.log(itemToAdd)
                     }
 
                     return <>
@@ -114,8 +129,9 @@ export default function PizzaCard({closeInfo, pizzaId}: PizzaCardProps): JSX.Ele
                                 </div>
                             </div>
                         </div>
-                        <button className="w-100 self-end mt-2 mr-4 text-xl font-medium bg-red-700 text-white rounded-full py-2 cursor-pointer
-            hover:bg-red-800">Add to cart for {changePrice() + countExtras()}
+                        <button onClick={handleAddToCart}
+                                className="w-100 self-end mt-2 mr-4 text-xl font-medium bg-red-700 text-white rounded-full
+                            py-2 cursor-pointer hover:bg-red-800">Add to cart for {changePrice() + countExtras()}
                         </button>
                     </>
                 }
