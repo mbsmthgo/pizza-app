@@ -64,11 +64,13 @@ export default function PizzaCard({closeInfo, pizzaId}: PizzaCardProps): JSX.Ele
                             id: item.id,
                             name: item.name,
                             photo: item.photo1,
+                            size: chosenSize.size,
+                            crust: chosenCrust,
+                            extras: chosenExtra,
                             price: changePrice() + countExtras(),
                             quantity: 1
                         }
                         dispatch(addItem(itemToAdd))
-                        console.log(itemToAdd)
                     }
 
                     return <>

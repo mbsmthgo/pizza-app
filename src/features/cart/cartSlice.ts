@@ -50,7 +50,11 @@ export const cartSlice = createSlice({
                 state.totalQuantity -= itemToRemove.quantity
             }
             saveToStorage(state)
-        }
+        },
+        // changeQuantity: (state, action: PayloadAction<number>) => {
+        //     const itemId = action.payload
+        //     const
+        // }
     }
 })
 

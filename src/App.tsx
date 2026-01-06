@@ -8,7 +8,6 @@ import type {RootState} from "./store.ts"
 
 function App(): JSX.Element {
     const totalQuantity: number = useSelector((state: RootState): number => state.cart.totalQuantity)
-    console.log(totalQuantity)
     return (
         <BrowserRouter>
             <header className="flex justify-between items-center p-8">
