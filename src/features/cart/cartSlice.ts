@@ -30,19 +30,33 @@ const saveToStorage = (state: CartState) => {
     }
 }
 
+export function generatePizzaId(baseId: number, size: string, crust: string, extras: string[]): string {
+    let id: string = `${baseId}_${size}_${crust}`
+    if (extras.length > 0) {
+        const sortedExtras = [...extras].sort().join("-")
+        id = id + `_${sortedExtras}`
+    }
+    return id
+}
+
 export const cartSlice = createSlice({
     name: "cart",
     initialState: getInitialState,
     reducers: {
         addItem: (state, action: PayloadAction<CartItem>) => {
             const newItem = action.payload
-            state.items.push(newItem)
+            const existingItem = state.items.find(item => item.id === newItem.id)
+            if (existingItem) {
+                existingItem.quantity += 1
+            } else {
+                state.items.push(newItem)
+            }
             state.totalPrice += newItem.price * newItem.quantity
             state.totalQuantity += newItem.quantity
             saveToStorage(state)
         },
-        removeItem: (state, action: PayloadAction<number>) => {
-            const itemId = action.payload
+        removeItem: (state, action: PayloadAction<string>) => {
+            const itemId: string = action.payload
             const itemToRemove = state.items.find(item => item.id === itemId)
             state.items = state.items.filter(item => item.id !== itemId)
             if (itemToRemove) {
@@ -51,12 +65,33 @@ export const cartSlice = createSlice({
             }
             saveToStorage(state)
         },
-        // changeQuantity: (state, action: PayloadAction<number>) => {
-        //     const itemId = action.payload
-        //     const
-        // }
+        plusQuantity: (state: CartState, action: PayloadAction<string>) => {
+            const itemId: string = action.payload
+            const itemToPlus: CartItem | undefined = state.items.find((item: CartItem): boolean => item.id === itemId)
+            if (itemToPlus) {
+                itemToPlus.quantity += 1
+                state.totalPrice += itemToPlus.price
+                state.totalQuantity += 1
+                saveToStorage(state)
+            }
+        },
+        minusQuantity: (state: CartState, action: PayloadAction<string>) => {
+            const itemId: string = action.payload
+            const itemToMinus: CartItem | undefined = state.items.find((item: CartItem): boolean => item.id === itemId)
+            if (itemToMinus && itemToMinus.quantity > 1) {
+                itemToMinus.quantity -= 1
+                state.totalPrice -= itemToMinus.price
+                state.totalQuantity -= 1
+                saveToStorage(state)
+            } else if (itemToMinus && itemToMinus.quantity === 1) {
+                state.items = state.items.filter((item: CartItem): boolean => item.id !== itemId)
+                state.totalPrice -= itemToMinus.price
+                state.totalQuantity -= 1
+                saveToStorage(state)
+            }
+        }
     }
 })
 
-export const {addItem, removeItem} = cartSlice.actions;
+export const {addItem, removeItem, plusQuantity, minusQuantity} = cartSlice.actions;
 export default cartSlice.reducer;

@@ -5,6 +5,7 @@ import Menu from "./pages/Menu.tsx"
 import Cart from "./pages/Cart.tsx";
 import {useSelector} from "react-redux";
 import type {RootState} from "./store.ts"
+import OffersPage from "./pages/OffersPage.tsx";
 
 function App(): JSX.Element {
     const totalQuantity: number = useSelector((state: RootState): number => state.cart.totalQuantity)
@@ -17,7 +18,7 @@ function App(): JSX.Element {
                 <nav className="flex items-center gap-16 text-red-700 font-medium pr-8">
                     <Link>ABOUT US</Link>
                     <Link to="/menu">SUPER CHEESE MENU</Link>
-                    <Link>SPECIAL OFFERS</Link>
+                    <Link to="/offers">SPECIAL OFFERS</Link>
                     <div className="flex items-center cursor-pointer">
                         <Link to="/cart" className={`bg-white p-2 ${totalQuantity > 0 ? "rounded-l-xl" : "rounded-xl"}`}>
                             MY CART</Link>
@@ -30,6 +31,7 @@ function App(): JSX.Element {
                 <Route path="/" element={<Home/>}/>
                 <Route path="/menu" element={<Menu/>}/>
                 <Route path="/cart" element={<Cart/>}/>
+                <Route path="/offers" element={<OffersPage />}/>
             </Routes>
         </BrowserRouter>
     )

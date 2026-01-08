@@ -4,6 +4,7 @@ import type {Ingredient, Pizza} from "../../menu.ts"
 import {ingredients, menu} from "../../menu.ts";
 import {useDispatch} from "react-redux";
 import {addItem} from "../../features/cart/cartSlice.ts";
+import {generatePizzaId} from "../../features/cart/cartSlice.ts";
 
 type PizzaCardProps = {
     closeInfo: (value: number) => void
@@ -61,7 +62,8 @@ export default function PizzaCard({closeInfo, pizzaId}: PizzaCardProps): JSX.Ele
 
                     function handleAddToCart() {
                         const itemToAdd = {
-                            id: item.id,
+                            id: generatePizzaId(item.id, chosenSize.size, chosenCrust, chosenExtra),
+                            baseId: item.id,
                             name: item.name,
                             photo: item.photo1,
                             size: chosenSize.size,
@@ -71,6 +73,7 @@ export default function PizzaCard({closeInfo, pizzaId}: PizzaCardProps): JSX.Ele
                             quantity: 1
                         }
                         dispatch(addItem(itemToAdd))
+                        closeInfo(0)
                     }
 
                     return <>
