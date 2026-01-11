@@ -3,14 +3,19 @@ import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../store.ts";
 import type {CartItem} from "../features/cart/types.ts";
 import {IoClose} from "react-icons/io5";
+import {IoIosArrowForward} from "react-icons/io";
 import {minusQuantity, plusQuantity, removeItem} from "../features/cart/cartSlice.ts";
 import {useNavigate} from "react-router";
+import Modal from "../components/modal/Modal.tsx";
 
 export default function Cart(): JSX.Element {
 
     const [promo, setPromo] = useState<string>("")
     const [discountMessage, setDiscountMessage] = useState<string>("")
     const [showDiscount, setShowDiscount] = useState<boolean>(false)
+
+    const [modalActive, setModalActive] = useState<boolean>(false)
+    const [phoneNumber, setPhoneNumber] = useState<string>("")
 
     const pizzas: CartItem[] = useSelector((state: RootState): CartItem[] => state.cart.items)
     const totalQuantity: number = useSelector((state: RootState): number => state.cart.totalQuantity)
@@ -87,21 +92,50 @@ export default function Cart(): JSX.Element {
                                     setPromo(e.target.value)
                                     if (showDiscount) setShowDiscount(false)
                                 }}
-                                    className="w-75 text-xl focus:outline-none"
-                                    type="text" placeholder="Promo code"/>
+                                       className="w-75 text-xl focus:outline-none"
+                                       type="text" placeholder="Promo code"/>
                                 {promo.length > 0 ?
                                     <button onClick={() => checkPromo(promo)}
-                                       className="ml-20 text-red-700 cursor-pointer">Apply</button> : null}
+                                            className="ml-20 text-red-700 cursor-pointer">Apply</button> : null}
                                 {showDiscount ? <p
-                                className="mt-2 text-neutral-500">{discountMessage}</p> : null}
+                                    className="mt-2 text-neutral-500">{discountMessage}</p> : null}
 
                             </div>
                         </div>
                         <div
-                            className="w-250 m-auto h-auto mb-20 rounded-b-xl p-4 shadow-lg bg-red-700 text-white font-medium
-                            flex justify-between">
+                            className="w-250 m-auto h-auto mb-20 rounded-b-xl p-6 shadow-lg bg-red-700 text-white font-medium
+                            flex justify-between items-center">
                             <p className="text-xl">Total: {totalPrice}₽</p>
-                            <button className="text-2xl cursor-pointer">Place an order</button>
+                            <button onClick={(): void => setModalActive(true)}
+                                    className="flex justify-center gap-8 items-center bg-white w-70 rounded-full py-2 px-4
+                             text-red-700 text-2xl cursor-pointer
+                             transition delay-150 duration-300 ease-in-out hover:-translate-y-1">
+                                <p className="text-center">Place an order</p>
+                                <IoIosArrowForward/>
+                            </button>
+                            <Modal active={modalActive} setActive={setModalActive}>
+                                <div className="flex flex-col gap-2">
+                                    <div className="flex items-center justify-between text-2xl">
+                                        <h1 className="text-black">Enter your phone number</h1>
+                                        <button onClick={(): void => setModalActive(false)}
+                                                className="text-black bg-neutral-100 p-1 rounded-full cursor-pointer hover:bg-neutral-200">
+                                            <IoClose/>
+                                        </button>
+                                    </div>
+                                    <p className="text-neutral-500">To log in to your account</p>
+                                </div>
+                                <form onSubmit={e => e.preventDefault()}
+                                    className="mt-8 flex flex-col gap-8">
+                                    <input type="tel" placeholder="Phone number" className="w-full h-15 bg-neutral-100
+                                rounded-2xl py-2 px-4 text-2xl text-black focus:outline-none placeholder-neutral-300"
+                                           value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)}/>
+                                    <button
+                                        className={`w-full bg-red-700 rounded-full p-3 text-xl 
+                                        ${phoneNumber.length >= 11 ? "opacity-100" : "opacity-50"} cursor-pointer`}>
+                                        Continue
+                                    </button>
+                                </form>
+                            </Modal>
                         </div>
                     </>
                 ) : <div
