@@ -15,7 +15,6 @@ export default function Cart(): JSX.Element {
     const [showDiscount, setShowDiscount] = useState<boolean>(false)
 
     const [modalActive, setModalActive] = useState<boolean>(false)
-    const [phoneNumber, setPhoneNumber] = useState<string>("")
 
     const pizzas: CartItem[] = useSelector((state: RootState): CartItem[] => state.cart.items)
     const totalQuantity: number = useSelector((state: RootState): number => state.cart.totalQuantity)
@@ -113,29 +112,7 @@ export default function Cart(): JSX.Element {
                                 <p className="text-center">Place an order</p>
                                 <IoIosArrowForward/>
                             </button>
-                            <Modal active={modalActive} setActive={setModalActive}>
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex items-center justify-between text-2xl">
-                                        <h1 className="text-black">Enter your phone number</h1>
-                                        <button onClick={(): void => setModalActive(false)}
-                                                className="text-black bg-neutral-100 p-1 rounded-full cursor-pointer hover:bg-neutral-200">
-                                            <IoClose/>
-                                        </button>
-                                    </div>
-                                    <p className="text-neutral-500">To log in to your account</p>
-                                </div>
-                                <form onSubmit={e => e.preventDefault()}
-                                    className="mt-8 flex flex-col gap-8">
-                                    <input type="tel" placeholder="Phone number" className="w-full h-15 bg-neutral-100
-                                rounded-2xl py-2 px-4 text-2xl text-black focus:outline-none placeholder-neutral-300"
-                                           value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)}/>
-                                    <button
-                                        className={`w-full bg-red-700 rounded-full p-3 text-xl 
-                                        ${phoneNumber.length >= 11 ? "opacity-100" : "opacity-50"} cursor-pointer`}>
-                                        Continue
-                                    </button>
-                                </form>
-                            </Modal>
+                            <Modal active={modalActive} setActive={setModalActive} />
                         </div>
                     </>
                 ) : <div

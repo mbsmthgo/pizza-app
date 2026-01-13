@@ -136,7 +136,7 @@ export default function PizzaCard({closeInfo, pizzaId}: PizzaCardProps): JSX.Ele
                         </div>
                         <button onClick={handleAddToCart}
                                 className="w-100 self-end mt-2 mr-4 text-xl font-medium bg-red-700 text-white rounded-full
-                            py-2 cursor-pointer hover:bg-red-800">Add to cart for {changePrice() + countExtras()}
+                            py-2 cursor-pointer hover:bg-red-800">Add to the cart for {changePrice() + countExtras()}
                         </button>
                     </>
                 }
