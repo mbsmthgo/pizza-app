@@ -1,79 +1,135 @@
-import type {JSX} from "react"
+import {type FormEvent, type JSX, useState} from "react"
 import {type NavigateFunction, useNavigate} from "react-router";
 import {useSelector} from "react-redux";
 import type {RootState} from "../store.ts"
 import type {CartItem} from "../features/cart/types.ts";
+import {chooseDeliveryTime} from "../utils.ts";
 
 export default function OrderPage(): JSX.Element {
+
+    const [timePicker, setTimePicker] = useState<boolean>(false)
+    const [delivery, setDelivery] = useState<string>("Quickly")
+    const [payment, setPayment] = useState<string>("SBP")
+
+    const [userInfo, setUserInfo] = useState({
+        name: "",
+        phoneNumber: "",
+        deliveryAddress: "",
+        deliveryTime: "",
+        paymentMethod: ""
+    })
 
     const navigate: NavigateFunction = useNavigate()
     const orderItems: CartItem[] = useSelector((state: RootState) => state.cart.items)
     const orderQuantity: number = useSelector((state: RootState) => state.cart.totalQuantity)
     const orderPrice: number = useSelector((state: RootState) => state.cart.totalPrice)
 
+    const deliveryIntervals: string[] = chooseDeliveryTime()
+
+    function handleFormSubmit(e: FormEvent): void {
+        e.preventDefault()
+        setUserInfo({...userInfo, deliveryTime: delivery, paymentMethod: payment})
+        navigate("/confirmation", {state: {userInfo: userInfo}})
+    }
+
     return (
-        <div className="flex justify-center items-center gap-40 mx-20 mb-20 font-medium">
+        <div className="flex justify-center items-center gap-20 mx-20 mb-20 font-medium">
             <div className="w-175 h-auto py-8 px-16 bg-white rounded-xl shadow-lg">
                 <h1 className="text-3xl text-red-700">Placing the order</h1>
-                <form className="mt-10 flex flex-col gap-4 text-black text-xl">
+                <form onSubmit={handleFormSubmit}
+                      className="mt-10 flex flex-col gap-4 text-black text-xl">
                     <div className="flex justify-start gap-8 items-center">
                         <p className="w-50">Name</p>
                         <label>
-                            <input type="text" placeholder="Name" className="bg-neutral-100 rounded-2xl w-80 h-10 focus:outline-none
+                            <input value={userInfo.name} required
+                                   onChange={(e) => setUserInfo({...userInfo, name: e.target.value})}
+                                   type="text" placeholder="Name" className="bg-neutral-100 rounded-2xl w-80 h-10 focus:outline-none
                     placeholder:text-neutral-300 py-2 px-4"/>
                         </label>
                     </div>
                     <div className="flex justify-start gap-8 items-center">
                         <p className="w-50">Phone number</p>
                         <label>
-                            <input type="tel" placeholder="Phone number" className="bg-neutral-100 rounded-2xl w-80 h-10 focus:outline-none
-                    placeholder:text-neutral-300 py-2 px-4"/>
+                            <input value={userInfo.phoneNumber} required
+                                   onChange={(e) => setUserInfo({...userInfo, phoneNumber: e.target.value})}
+                                   type="tel" placeholder="Phone number" className="bg-neutral-100 rounded-2xl w-80 h-10
+                            focus:outline-none placeholder:text-neutral-300 py-2 px-4"/>
                         </label>
                     </div>
                     <div className="flex justify-start gap-8 items-start">
                         <p className="w-50">Delivery address</p>
                         <label>
-                    <textarea placeholder="Delivery address" className="bg-neutral-100 rounded-2xl w-80 h-20 focus:outline-none
-                    placeholder:text-neutral-300 py-2 px-4 resize-none"/>
+                    <textarea value={userInfo.deliveryAddress} required
+                              onChange={(e) => setUserInfo({...userInfo, deliveryAddress: e.target.value})}
+                              placeholder="Delivery address" className="bg-neutral-100 rounded-2xl w-80 h-20
+                    focus:outline-none placeholder:text-neutral-300 py-2 px-4 resize-none"/>
                         </label>
                     </div>
-                    <div className="flex justify-start gap-8 items-center">
+                    <div className="flex justify-start gap-8 items-start">
                         <p className="w-50">Delivery time</p>
-                        <div className="w-80 flex justify-center gap-4">
-                            <button type="button"
-                                    className="bg-white ring-1 ring-neutral-200 shadow-md rounded-full text-red-700 py-2 px-4 cursor-pointer
-                            hover:inset-shadow-sm hover:shadow-none">Quickly
+                        <div className="w-80 h-40 flex justify-center items-start gap-4">
+                            <button onClick={(): void => setDelivery("Quickly")}
+                                    type="button"
+                                    className={`${delivery === "Quickly" ? "outline-2 outline-red-700 bg-neutral-100" : "bg-white"} w-40 
+                                    ring-1 ring-neutral-200 shadow-md rounded-full text-red-700 py-2 px-4 
+                                    cursor-pointer hover:inset-shadow-sm hover:shadow-none`}>Quickly
                             </button>
-                            <button type="button"
-                                    className="bg-white ring-1 ring-neutral-200 shadow-md rounded-full text-red-700 py-2 px-4 cursor-pointer
-                            hover:inset-shadow-sm hover:shadow-none">Choose
-                                time
-                            </button>
+                            <div className="flex flex-col">
+                                <button onClick={(): void => setTimePicker((prev: boolean): boolean => !prev)}
+                                        type="button"
+                                        className={`w-40 ring-1 ring-neutral-200 shadow-md 
+                                        ${timePicker ? "rounded-t-xl outline-none" : "rounded-full"} 
+                                        ${delivery !== "Quickly" ? "outline-2 outline-red-700 bg-neutral-100" : "bg-white"} text-red-700 
+                                        py-2 px-4 cursor-pointer hover:inset-shadow-sm hover:shadow-none`}>
+                                    {delivery !== "Quickly" ? delivery : "Choose time"}
+                                </button>
+                                {timePicker ?
+                                    <div className="mt-0.5 w-40 h-25 bg-white shadow-md rounded-b-xl overflow-y-scroll">
+                                        <ul className="p-2 text-center text-lg">
+                                            {deliveryIntervals.map((interval: string): JSX.Element => (
+                                                <li onClick={(): void => {
+                                                    setDelivery(interval)
+                                                    setTimePicker(false)
+                                                }} key={interval}
+                                                    className="py-1 border-b-1 border-gray-200 last:border-none
+                                                cursor-pointer hover:bg-gray-100 hover:rounded-xl">
+                                                    {interval}</li>
+                                            ))}
+                                        </ul>
+                                    </div> : null}
+                            </div>
                         </div>
                     </div>
-                    <h2 className="mt-10 mb-8 text-red-700 text-2xl">Payment methods</h2>
-                    <div className="flex gap-4 items-center">
-                        <input id="sbp" type="radio" name="payment" className="cursor-pointer"/>
-                        <label htmlFor="sbp">
+
+                    <h2 className="mb-8 text-red-700 text-2xl">Payment methods</h2>
+                    <div
+                        className="flex justify-center items-center gap-2 bg-white rounded-xl shadow-md w-100 h-20 p-2 text-lg">
+                        <button type="button"
+                                onClick={(): void => setPayment("SBP")}
+                                className={`rounded-xl px-2 w-30 h-15 cursor-pointer
+                            ${payment === "SBP" ? "outline-2 outline-red-700 bg-neutral-100" : ""}`}>
                             <img src="src/assets/sbp.png" alt="SBP Payment Icon" className="w-20"/>
-                        </label>
+                        </button>
+                        <button type="button"
+                                onClick={(): void => setPayment("Card")}
+                                className={`rounded-xl px-2 w-35 h-15 cursor-pointer
+                            ${payment === "Card" ? "outline-2 outline-red-700 bg-neutral-100" : ""}`}>By card online
+                        </button>
+                        <button type="button"
+                                onClick={(): void => setPayment("Cash")}
+                                className={`rounded-xl px-2 w-30 h-15 cursor-pointer
+                            ${payment === "Cash" ? "outline-2 outline-red-700 bg-neutral-100" : ""}`}>In cash
+                        </button>
                     </div>
-                    <div>
-                        <input id="card" type="radio" name="payment" className="cursor-pointer"/>
-                        <label htmlFor="card" className="ml-4">By card online</label>
-                    </div>
-                    <div>
-                        <input id="cash" type="radio" name="payment" className="cursor-pointer"/>
-                        <label htmlFor="cash" className="ml-4">In cash</label>
-                    </div>
+
                     <div className="mt-10 flex justify-between">
                         <button onClick={() => navigate("/cart")}
                                 type="button"
-                                className="w-50 bg-neutral-200 rounded-full text-neutral-500 p-3 cursor-pointer hover:bg-neutral-300">Back
-                            to the cart
+                                className="w-50 bg-neutral-200 rounded-full text-neutral-500 p-3 cursor-pointer
+                                hover:bg-neutral-300">Back to the cart
                         </button>
-                        <button
-                            className="w-50 bg-red-700 rounded-full text-white p-3 cursor-pointer hover:bg-red-800">Order
+                        <button className="w-50 bg-red-700 rounded-full text-white p-3 cursor-pointer hover:bg-red-800">
+                            Order
                         </button>
                     </div>
                 </form>

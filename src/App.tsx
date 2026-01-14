@@ -9,6 +9,7 @@ import OffersPage from "./pages/OffersPage.tsx";
 import Account from "./pages/Account.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
 import OrderPage from "./pages/OrderPage.tsx";
+import Confirmation from "./pages/Confirmation.tsx";
 
 function App(): JSX.Element {
     const totalQuantity: number = useSelector((state: RootState): number => state.cart.totalQuantity)
@@ -39,6 +40,7 @@ function App(): JSX.Element {
                 <Route path="/account" element={<Account />}/>
                 <Route path="/cart" element={<Cart/>}/>
                 <Route path="/order" element={<OrderPage />}/>
+                <Route path="/confirmation" element={<Confirmation />}/>
             </Routes>
         </BrowserRouter>
     )
