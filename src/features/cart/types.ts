@@ -4,7 +4,7 @@ export type CartItem = {
     name: string
     photo: string
     size: string
-    crust: string
+    crust?: string
     extras: string[]
     price: number
     quantity: number

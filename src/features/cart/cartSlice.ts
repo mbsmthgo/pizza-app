@@ -30,8 +30,11 @@ const saveToStorage = (state: CartState) => {
     }
 }
 
-export function generatePizzaId(baseId: number, size: string, crust: string, extras: string[]): string {
-    let id: string = `${baseId}_${size}_${crust}`
+export function generateProductId(baseId: number, size: string, crust: string, extras: string[], type: string): string {
+    let id: string = `${baseId}_${size}`
+    if (type === "pizza") {
+       id = `${baseId}_${size}_${crust}`
+    }
     if (extras.length > 0) {
         const sortedExtras = [...extras].sort().join("-")
         id = id + `_${sortedExtras}`
@@ -89,9 +92,15 @@ export const cartSlice = createSlice({
                 state.totalQuantity -= 1
                 saveToStorage(state)
             }
+        },
+        cleanCart: (state: CartState) => {
+            state.items = []
+            state.totalPrice = 0
+            state.totalQuantity = 0
+            saveToStorage(state)
         }
     }
 })
 
-export const {addItem, removeItem, plusQuantity, minusQuantity} = cartSlice.actions;
+export const {addItem, removeItem, plusQuantity, minusQuantity, cleanCart} = cartSlice.actions;
 export default cartSlice.reducer;

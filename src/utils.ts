@@ -1,3 +1,8 @@
+import type {Ingredient} from "./menu.ts";
+
+export const steps: string[] = ["Accepted", "Cooking",
+    "Packing", "Delivery", "Delivered"]
+
 export function chooseDeliveryTime(): string[] {
     const now = new Date()
     const deliveryIntervals: string[] = []
@@ -36,3 +41,17 @@ export function chooseDeliveryTime(): string[] {
     }
     return deliveryIntervals
 }
+
+export function handleAddExtra(arrayOfExtras: string[], ingredient: Ingredient,
+                               saveArray: (value: string[] | ((prev: string[]) => string[])) => void
+): void {
+    if (!arrayOfExtras.includes(ingredient.name)) {
+        saveArray((prev: string[]): string[] => [...prev, ingredient.name])
+    } else {
+        const index: number = arrayOfExtras.indexOf(ingredient.name)
+        const arrCopy: string[] = [...arrayOfExtras]
+        arrCopy.splice(index, 1)
+        saveArray(arrCopy)
+    }
+}
+

@@ -1,9 +1,10 @@
 import {type FormEvent, type JSX, useState} from "react"
 import {type NavigateFunction, useNavigate} from "react-router";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../store.ts"
 import type {CartItem} from "../features/cart/types.ts";
 import {chooseDeliveryTime} from "../utils.ts";
+import {cleanCart} from "../features/cart/cartSlice.ts";
 
 export default function OrderPage(): JSX.Element {
 
@@ -20,16 +21,20 @@ export default function OrderPage(): JSX.Element {
     })
 
     const navigate: NavigateFunction = useNavigate()
-    const orderItems: CartItem[] = useSelector((state: RootState) => state.cart.items)
-    const orderQuantity: number = useSelector((state: RootState) => state.cart.totalQuantity)
-    const orderPrice: number = useSelector((state: RootState) => state.cart.totalPrice)
+    const orderItems: CartItem[] = useSelector((state: RootState): CartItem[] => state.cart.items)
+    const orderQuantity: number = useSelector((state: RootState): number => state.cart.totalQuantity)
+    const orderPrice: number = useSelector((state: RootState): number => state.cart.totalPrice)
 
     const deliveryIntervals: string[] = chooseDeliveryTime()
+
+    const dispatch = useDispatch()
 
     function handleFormSubmit(e: FormEvent): void {
         e.preventDefault()
         setUserInfo({...userInfo, deliveryTime: delivery, paymentMethod: payment})
-        navigate("/confirmation", {state: {userInfo: userInfo}})
+        dispatch(cleanCart())
+        navigate("/confirmation", {state: {userInfo: userInfo, orderDetails: {orderItems: orderItems,
+                orderQuantity: orderQuantity, orderPrice: orderPrice}}})
     }
 
     return (
@@ -40,8 +45,8 @@ export default function OrderPage(): JSX.Element {
                       className="mt-10 flex flex-col gap-4 text-black text-xl">
                     <div className="flex justify-start gap-8 items-center">
                         <p className="w-50">Name</p>
-                        <label>
-                            <input value={userInfo.name} required
+                        <label htmlFor="name">
+                            <input value={userInfo.name} required id="name"
                                    onChange={(e) => setUserInfo({...userInfo, name: e.target.value})}
                                    type="text" placeholder="Name" className="bg-neutral-100 rounded-2xl w-80 h-10 focus:outline-none
                     placeholder:text-neutral-300 py-2 px-4"/>
@@ -49,8 +54,8 @@ export default function OrderPage(): JSX.Element {
                     </div>
                     <div className="flex justify-start gap-8 items-center">
                         <p className="w-50">Phone number</p>
-                        <label>
-                            <input value={userInfo.phoneNumber} required
+                        <label htmlFor="phoneNumber">
+                            <input value={userInfo.phoneNumber} required id="phoneNumber"
                                    onChange={(e) => setUserInfo({...userInfo, phoneNumber: e.target.value})}
                                    type="tel" placeholder="Phone number" className="bg-neutral-100 rounded-2xl w-80 h-10
                             focus:outline-none placeholder:text-neutral-300 py-2 px-4"/>
@@ -58,8 +63,8 @@ export default function OrderPage(): JSX.Element {
                     </div>
                     <div className="flex justify-start gap-8 items-start">
                         <p className="w-50">Delivery address</p>
-                        <label>
-                    <textarea value={userInfo.deliveryAddress} required
+                        <label htmlFor="deliveryAddress">
+                    <textarea value={userInfo.deliveryAddress} required id="deliveryAddress"
                               onChange={(e) => setUserInfo({...userInfo, deliveryAddress: e.target.value})}
                               placeholder="Delivery address" className="bg-neutral-100 rounded-2xl w-80 h-20
                     focus:outline-none placeholder:text-neutral-300 py-2 px-4 resize-none"/>
@@ -128,7 +133,10 @@ export default function OrderPage(): JSX.Element {
                                 className="w-50 bg-neutral-200 rounded-full text-neutral-500 p-3 cursor-pointer
                                 hover:bg-neutral-300">Back to the cart
                         </button>
-                        <button className="w-50 bg-red-700 rounded-full text-white p-3 cursor-pointer hover:bg-red-800">
+                        <button disabled={userInfo.name === "" || userInfo.phoneNumber === "" || userInfo.deliveryAddress === ""}
+                            className={`w-50 bg-red-700 rounded-full text-white p-3 cursor-pointer
+                            ${(userInfo.name === "" || userInfo.phoneNumber === "" || userInfo.deliveryAddress === "") ?
+                            "opacity-50" : "opacity-100"}`}>
                             Order
                         </button>
                     </div>

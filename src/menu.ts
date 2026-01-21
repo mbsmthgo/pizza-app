@@ -1,53 +1,14 @@
 export type Pizza = {
     id: number
     name: string
-    price: number
-    photo1: string
-    photo2: string
+    smallPrice: number
+    mediumPrice: number
+    largePrice: number
+    extraLargePrice: number
+    thickPhoto: string
+    thinPhoto: string
     ingredients: string
 }
-export const menu: Pizza[] = [
-    {
-        id: 1,
-        name: "Pepperoni",
-        price: 250,
-        photo1: "src/assets/pizzas/pepperoni.png",
-        photo2: "src/assets/pizzas/pepperoni-thin.png",
-        ingredients: "pepperoni, mozzarella, tomatoes, tomato sauce"
-    },
-    {
-        id: 2,
-        name: "Margherita",
-        price: 200,
-        photo1: "src/assets/pizzas/margherita.png",
-        photo2: "src/assets/pizzas/margherita-thin.png",
-        ingredients: "mozzarella, tomatoes, italian herbs, tomato sauce"
-    },
-    {
-        id: 3,
-        name: "Hawaiian",
-        price: 250,
-        photo1: "src/assets/pizzas/hawaiian.png",
-        photo2: "src/assets/pizzas/hawaiian-thin.png",
-        ingredients: "chicken, pineapple, mozzarella, Alfredo sauce"
-    },
-    {
-        id: 4,
-        name: "Hot Chili'n'Cheese Shrimps",
-        price: 280,
-        photo1: "src/assets/pizzas/shrimp.png",
-        photo2: "src/assets/pizzas/shrimp-thin.png",
-        ingredients: "shrimps, pineapple, chili sauce, sweet pepper, mozzarella, Alfredo sauce"
-    },
-    {
-        id: 5,
-        name: "Cheese Chicken",
-        price: 270,
-        photo1: "src/assets/pizzas/cheese-chicken.png",
-        photo2: "src/assets/pizzas/cheese-chicken-thin.png",
-        ingredients: "chicken, cheese mix, cheese sauce, tomatoes, Alfredo sauce, garlic"
-    }
-]
 
 export type Ingredient = {
     id: number
@@ -91,5 +52,61 @@ export const ingredients: Ingredient[] = [
         name: "Ham",
         price: 50,
         photo: "src/assets/ingredients/ham.png"
+    }
+]
+
+export type PizzaSizeWeight = {
+    size: string
+    weight: number
+}
+
+export const sizeOptions: PizzaSizeWeight[] =
+    [
+        {size: "S", weight: 250},
+        {size: "M", weight: 450},
+        {size: "L", weight: 650},
+        {size: "XL", weight: 850}
+    ]
+
+export const crustOptions: string[] = ["Thick", "Thin"]
+
+export type Drink = {
+    id: number
+    name: string
+    price: number
+    photo: string
+    ingredients: string
+}
+export const drinksMenu: Drink[] = [
+    {
+        id: 6,
+        name: "Americano",
+        price: 100,
+        photo: "src/assets/drinks/americano.png",
+        ingredients: "espresso, water"
+    },
+    {
+        id: 7,
+        name: "Latte",
+        price: 120,
+        photo: "src/assets/drinks/latte.png",
+        ingredients: "espresso, double milk, frothy milk"
+    }
+]
+
+export const drinkSizeOptions: string[] = ["0.3 l", "0.4 l"]
+
+export const drinkToppings: Ingredient[] = [
+    {
+        id: 7,
+        name: "Milk",
+        price: 10,
+        photo: "src/assets/drinks/milk.png"
+    },
+    {
+        id: 8,
+        name: "Caramel syrup",
+        price: 15,
+        photo: "src/assets/drinks/caramel.png"
     }
 ]

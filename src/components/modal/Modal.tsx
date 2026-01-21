@@ -3,6 +3,7 @@ import "./modal.css"
 import {IoClose} from "react-icons/io5";
 import {GoDotFill} from "react-icons/go";
 import OTP from "./OTP.tsx";
+import {sendCodeToEmail} from "../../api.ts";
 
 type ModalProps = {
     active: boolean
@@ -16,6 +17,7 @@ export default function Modal({active, setActive}: ModalProps): JSX.Element {
 
     function handleFormSubmit(e: FormEvent<HTMLFormElement>): void {
         e.preventDefault()
+        sendCodeToEmail(email)
         setSendCode(true)
     }
 
