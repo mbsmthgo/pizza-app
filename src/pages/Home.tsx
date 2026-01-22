@@ -4,7 +4,7 @@ import {useNavigate} from "react-router";
 export default function Home(): JSX.Element {
     const navigate = useNavigate()
     return (
-        <div className="px-32 py-16 flex justify-center items-start">
+        <div className="px-32 py-16 h-[100vh] flex justify-center items-start">
             <div className="flex flex-col gap-8 font-medium">
                 <h2 className="text-3xl text-red-700 ">Meet our absolute bestseller</h2>
                 <h1 className="text-6xl">Hot Chili'n'Cheese Shrimps</h1>

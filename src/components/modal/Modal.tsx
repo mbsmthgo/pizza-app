@@ -43,7 +43,7 @@ export default function Modal({active, setActive}: ModalProps): JSX.Element {
                                     </button>
                                 </div>
                             </div>
-                            <OTP />
+                            <OTP email={email} />
                         </>
                         :
                         <>

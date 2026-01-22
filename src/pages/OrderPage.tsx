@@ -38,7 +38,7 @@ export default function OrderPage(): JSX.Element {
     }
 
     return (
-        <div className="flex justify-center items-center gap-20 mx-20 mb-20 font-medium">
+        <div className="flex justify-center items-center gap-20 mx-20 mb-20 h-[100vh] font-medium">
             <div className="w-175 h-auto py-8 px-16 bg-white rounded-xl shadow-lg">
                 <h1 className="text-3xl text-red-700">Placing the order</h1>
                 <form onSubmit={handleFormSubmit}

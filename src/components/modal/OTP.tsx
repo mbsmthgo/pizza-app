@@ -1,16 +1,19 @@
 import {
     type ChangeEvent,
-    type KeyboardEvent,
+    type FormEvent,
     type JSX,
+    type KeyboardEvent,
     type RefObject,
     useEffect,
     useRef,
-    useState,
-    type FormEvent
+    useState
 } from "react"
 import {type NavigateFunction, useNavigate} from "react-router";
+import {verifyCode} from "../../api.ts";
+import {useDispatch} from "react-redux";
+import {saveUser} from "../../features/user/userSlice.ts";
 
-export default function OTP(): JSX.Element {
+export default function OTP({email}: { email: string }): JSX.Element {
 
     const inputRefs: RefObject<HTMLInputElement | null>[] = [
         useRef<HTMLInputElement>(null),
@@ -20,12 +23,14 @@ export default function OTP(): JSX.Element {
     ]
 
     const [codes, setCodes] = useState<string[]>(["", "", "", ""])
+    const [errorMessage, setErrorMessage] = useState<string>("")
 
     useEffect((): void => {
         inputRefs[0].current?.focus()
     }, [])
 
     const navigate: NavigateFunction = useNavigate()
+    const dispatch = useDispatch()
 
     function handleCodeChange(value: string, index: number): void {
         const newCodes: string[] = [...codes]
@@ -44,18 +49,30 @@ export default function OTP(): JSX.Element {
 
     function handleFormCodeSubmit(e: FormEvent<HTMLFormElement>): void {
         e.preventDefault()
-        navigate("/order")
+        verifyCode(email, codes.join("")).then(result => {
+            if (result) {
+                dispatch(saveUser({email: email, code: codes.join("")}))
+                navigate("/order")
+            } else {
+                setErrorMessage("Incorrect code")
+            }
+        })
     }
 
     return (
         <form onSubmit={(e: FormEvent<HTMLFormElement>): void => handleFormCodeSubmit(e)}
-            className="mt-8 flex flex-col gap-8 items-center">
+              className="mt-8 flex flex-col gap-8 items-center">
             <div className="w-76 grid grid-cols-4 text-black text-4xl">
                 {codes.map((code, index) =>
                     (
                         <input key={index} value={code}
                                ref={inputRefs[index]}
-                               onChange={(e: ChangeEvent<HTMLInputElement>): void => handleCodeChange(e.target.value, index)}
+                               onChange={(e: ChangeEvent<HTMLInputElement>): void => {
+                                   handleCodeChange(e.target.value, index)
+                                   if (errorMessage) {
+                                       setErrorMessage("")
+                                   }
+                               }}
                                onKeyDown={(e: KeyboardEvent<HTMLInputElement>): void => handleKeyDown(e, index)}
                                pattern="[0-9]" maxLength={1} type="tel"
                                className="bg-neutral-100 w-16 h-20 rounded-2xl
@@ -64,8 +81,9 @@ export default function OTP(): JSX.Element {
                 )
                 }
             </div>
+            {errorMessage && <p className="text-red-700">{errorMessage}</p>}
             <button disabled={!(codes.every((value: string): boolean => value != ""))}
-                className={`w-full bg-red-700 rounded-full p-3 text-xl cursor-pointer
+                    className={`w-full bg-red-700 rounded-full p-3 text-xl cursor-pointer
                 ${!(codes.every((value: string): boolean => value != "")) ? "opacity-50" : "opacity-100"}`}>Confirm
             </button>
         </form>

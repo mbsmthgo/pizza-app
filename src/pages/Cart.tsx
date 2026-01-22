@@ -7,6 +7,7 @@ import {IoIosArrowForward} from "react-icons/io";
 import {minusQuantity, plusQuantity, removeItem} from "../features/cart/cartSlice.ts";
 import {useNavigate} from "react-router";
 import Modal from "../components/modal/Modal.tsx";
+import type {User} from "../features/user/types.ts";
 
 export default function Cart(): JSX.Element {
 
@@ -21,6 +22,8 @@ export default function Cart(): JSX.Element {
     const totalPrice: number = useSelector((state: RootState): number => state.cart.totalPrice)
 
     const dispatch = useDispatch()
+    const authUser: User = useSelector((state: RootState): User => state.user)
+    console.log(authUser)
 
     const navigate = useNavigate()
 
@@ -46,8 +49,16 @@ export default function Cart(): JSX.Element {
         return discountMessage
     }
 
+    function checkUser(): void {
+        if (authUser.email !== "") {
+            navigate("/order")
+        } else {
+            setModalActive(true)
+        }
+    }
+
     return (
-        <>
+        <div className="h-[100vh]">
             {totalQuantity > 0 ?
                 (
                     <>
@@ -105,7 +116,7 @@ export default function Cart(): JSX.Element {
                             className="w-250 m-auto h-auto mb-20 rounded-b-xl p-6 shadow-lg bg-red-700 text-white font-medium
                             flex justify-between items-center">
                             <p className="text-xl">Total: {totalPrice}₽</p>
-                            <button onClick={(): void => setModalActive(true)}
+                            <button onClick={(): void => checkUser()}
                                     className="flex justify-center gap-8 items-center bg-white w-70 rounded-full py-2 px-4
                              text-red-700 text-2xl cursor-pointer
                              transition delay-150 duration-300 ease-in-out hover:-translate-y-1">
@@ -123,6 +134,6 @@ export default function Cart(): JSX.Element {
                         the menu
                     </button>
                 </div>}
-        </>
+        </div>
     )
 }

@@ -1,46 +1,29 @@
 import type {JSX} from "react"
-import {BrowserRouter, Link, Route, Routes} from "react-router"
+import {BrowserRouter, Route, Routes} from "react-router"
 import Home from "./pages/Home.tsx"
 import Menu from "./pages/Menu.tsx"
 import Cart from "./pages/Cart.tsx";
-import {useSelector} from "react-redux";
-import type {RootState} from "./store.ts"
 import OffersPage from "./pages/OffersPage.tsx";
 import Account from "./pages/Account.tsx";
 import AboutPage from "./pages/AboutPage.tsx";
 import OrderPage from "./pages/OrderPage.tsx";
 import Confirmation from "./pages/Confirmation.tsx";
+import Layout from "./components/Layout.tsx";
 
 function App(): JSX.Element {
-    const totalQuantity: number = useSelector((state: RootState): number => state.cart.totalQuantity)
     return (
         <BrowserRouter>
-            <header className="flex justify-between items-center p-8">
-                <Link to="/">
-                    <img src="src/assets/pizza-logo.png" alt="Pizza Logo" className="w-60"/>
-                </Link>
-                <nav className="flex items-center gap-16 text-red-700 font-medium pr-8">
-                    <Link to="/about">ABOUT US</Link>
-                    <Link to="/menu">SUPER CHEESE MENU</Link>
-                    <Link to="/offers">SPECIAL OFFERS</Link>
-                    <Link to="/account">ACCOUNT</Link>
-                    <div className="flex items-center cursor-pointer">
-                        <Link to="/cart" className={`bg-white p-2 ${totalQuantity > 0 ? "rounded-l-xl" : "rounded-xl"}`}>
-                            CART</Link>
-                        {totalQuantity > 0 &&
-                        <div className="bg-red-700 p-2 text-white rounded-r-xl">{totalQuantity}</div>}
-                    </div>
-                </nav>
-            </header>
             <Routes>
-                <Route path="/" element={<Home/>}/>
-                <Route path="/about" element={<AboutPage />}/>
-                <Route path="/menu" element={<Menu/>}/>
-                <Route path="/offers" element={<OffersPage />}/>
-                <Route path="/account" element={<Account />}/>
-                <Route path="/cart" element={<Cart/>}/>
-                <Route path="/order" element={<OrderPage />}/>
-                <Route path="/confirmation" element={<Confirmation />}/>
+                <Route path="/" element={<Layout />}>
+                    <Route index element={<Home />} />
+                    <Route path="/about" element={<AboutPage/>}/>
+                    <Route path="/menu" element={<Menu/>}/>
+                    <Route path="/offers" element={<OffersPage/>}/>
+                    <Route path="/account" element={<Account/>}/>
+                    <Route path="/cart" element={<Cart/>}/>
+                    <Route path="/order" element={<OrderPage/>}/>
+                    <Route path="/confirmation" element={<Confirmation/>}/>
+                </Route>
             </Routes>
         </BrowserRouter>
     )

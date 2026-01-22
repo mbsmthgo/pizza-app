@@ -15,7 +15,7 @@ export default function OffersPage(): JSX.Element {
     }
 
     return (
-        <div className="mx-20 mb-20">
+        <div className="mx-20 h-[100vh]">
             <div className="flex flex-col gap-2 items-center w-125 pb-4 bg-white rounded-xl font-medium text-center
             shadow-lg">
                 <img src="src/assets/offer-image.jpg" alt="First Order Promo-image"

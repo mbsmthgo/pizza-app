@@ -11,7 +11,7 @@ export default function Menu(): JSX.Element {
     }, [])
     const [openMoreInfo, setOpenMoreInfo] = useState({id: 0, type: ""})
     return (
-        <div className="mx-20 mb-20">
+        <div className="mx-20 mb-20 min-h-[100vh]">
             <h1 className="text-3xl font-medium">Pizzas</h1>
             <div className="mt-10 flex justify-start content-center gap-8">
                 {menu.map((item: Pizza): JSX.Element =>
