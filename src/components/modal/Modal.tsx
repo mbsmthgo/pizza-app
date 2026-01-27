@@ -8,9 +8,10 @@ import {sendCodeToEmail} from "../../api.ts";
 type ModalProps = {
     active: boolean
     setActive: (value: boolean) => void
+    navigationPath: string
 }
 
-export default function Modal({active, setActive}: ModalProps): JSX.Element {
+export default function Modal({active, setActive, navigationPath}: ModalProps): JSX.Element {
 
     const [email, setEmail] = useState<string>("")
     const [sendCode, setSendCode] = useState<boolean>(false)
@@ -22,7 +23,7 @@ export default function Modal({active, setActive}: ModalProps): JSX.Element {
     }
 
     return (
-        <div className={active ? "modal active" : "modal"} onClick={(): void => setActive(false)}>
+        <div className={`font-medium ${active ? "modal active" : "modal"}`} onClick={(): void => setActive(false)}>
             <div className={active ? "modal-content active" : "modal-content"}
                  onClick={e => e.stopPropagation()}>
                 <div>
@@ -43,7 +44,7 @@ export default function Modal({active, setActive}: ModalProps): JSX.Element {
                                     </button>
                                 </div>
                             </div>
-                            <OTP email={email} />
+                            <OTP email={email} navigationPath={navigationPath}/>
                         </>
                         :
                         <>
@@ -64,7 +65,7 @@ export default function Modal({active, setActive}: ModalProps): JSX.Element {
                                 rounded-2xl py-2 px-4 text-2xl text-black focus:outline-none placeholder-neutral-300"
                                        value={email} onChange={e => setEmail(e.target.value)}/>
                                 <button disabled={!email.includes("@")}
-                                    className={`w-full bg-red-700 rounded-full p-3 text-xl 
+                                    className={`w-full bg-red-700 text-white rounded-full p-3 text-xl 
                                         ${email.includes("@") ? "opacity-100" : "opacity-50"} cursor-pointer`}>
                                     Continue
                                 </button>

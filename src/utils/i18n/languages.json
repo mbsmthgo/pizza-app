@@ -1,0 +1,12 @@
+[
+  {
+    "name": "English",
+    "code": "en",
+    "flag": "\uD83C\uDDEC\uD83C\uDDE7"
+  },
+  {
+    "name": "Русский",
+    "code": "ru",
+    "flag": "\uD83C\uDDF7\uD83C\uDDFA"
+  }
+]

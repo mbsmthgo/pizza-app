@@ -8,6 +8,7 @@ import {minusQuantity, plusQuantity, removeItem} from "../features/cart/cartSlic
 import {useNavigate} from "react-router";
 import Modal from "../components/modal/Modal.tsx";
 import type {User} from "../features/user/types.ts";
+import {useTranslation} from "react-i18next";
 
 export default function Cart(): JSX.Element {
 
@@ -23,9 +24,10 @@ export default function Cart(): JSX.Element {
 
     const dispatch = useDispatch()
     const authUser: User = useSelector((state: RootState): User => state.user)
-    console.log(authUser)
 
     const navigate = useNavigate()
+
+    const { t } = useTranslation()
 
     function deleteFromCart(pizzaId: string) {
         dispatch(removeItem(pizzaId))
@@ -41,16 +43,16 @@ export default function Cart(): JSX.Element {
 
     function checkPromo(userPromo: string): string {
         if (userPromo === "HELLO10") {
-            setDiscountMessage("The promo code is accepted")
+            setDiscountMessage(`${t("promoAccepted")}`)
         } else {
-            setDiscountMessage("The promo code was not found. Try another one")
+            setDiscountMessage(`${t("promoRejected")}`)
         }
         setShowDiscount(true)
         return discountMessage
     }
 
     function checkUser(): void {
-        if (authUser.email !== "") {
+        if (authUser?.email) {
             navigate("/order")
         } else {
             setModalActive(true)
@@ -58,7 +60,7 @@ export default function Cart(): JSX.Element {
     }
 
     return (
-        <div className="h-[100vh]">
+        <div className="min-h-[100vh]">
             {totalQuantity > 0 ?
                 (
                     <>
@@ -73,7 +75,7 @@ export default function Cart(): JSX.Element {
                                             <div className="flex flex-col gap-4">
                                                 <h1 className="text-xl">{pizza.name}</h1>
                                                 <div className="flex flex-col gap-2">
-                                                    <p className="text-neutral-500">{pizza.size}, {pizza.crust}</p>
+                                                    <p className="text-neutral-500">{pizza.size}{pizza.crust ? "," : ""} {pizza.crust}</p>
                                                     <p className="text-neutral-500">{pizza.extras.length !== 0 ? "+" : ""} {pizza.extras.join(", ")}</p>
                                                 </div>
                                             </div>
@@ -81,16 +83,16 @@ export default function Cart(): JSX.Element {
                                         <div
                                             className="flex gap-4 justify-center items-end bg-neutral-200 pt-1 pb-2 px-3 rounded-full">
                                             <button
-                                                onClick={() => handleMinusQuantity(pizza.id)}
+                                                onClick={(): void => handleMinusQuantity(pizza.id)}
                                                 className="text-2xl opacity-50 cursor-pointer hover:opacity-100">-
                                             </button>
                                             <p className="text-xl text-neutral-500">{pizza.quantity}</p>
-                                            <button onClick={() => handlePlusQuantity(pizza.id)}
+                                            <button onClick={(): void => handlePlusQuantity(pizza.id)}
                                                     className="text-2xl opacity-50 cursor-pointer hover:opacity-100">+
                                             </button>
                                         </div>
                                         <p className="text-xl">{pizza.price * pizza.quantity}₽</p>
-                                        <button onClick={() => deleteFromCart(pizza.id)}
+                                        <button onClick={(): void => deleteFromCart(pizza.id)}
                                                 className="text-xl opacity-50 hover:opacity-100 cursor-pointer">
                                             <IoClose/>
                                         </button>
@@ -103,10 +105,10 @@ export default function Cart(): JSX.Element {
                                     if (showDiscount) setShowDiscount(false)
                                 }}
                                        className="w-75 text-xl focus:outline-none"
-                                       type="text" placeholder="Promo code"/>
+                                       type="text" placeholder={t("promo")}/>
                                 {promo.length > 0 ?
                                     <button onClick={() => checkPromo(promo)}
-                                            className="ml-20 text-red-700 cursor-pointer">Apply</button> : null}
+                                            className="ml-20 text-red-700 cursor-pointer">{t("apply")}</button> : null}
                                 {showDiscount ? <p
                                     className="mt-2 text-neutral-500">{discountMessage}</p> : null}
 
@@ -115,23 +117,23 @@ export default function Cart(): JSX.Element {
                         <div
                             className="w-250 m-auto h-auto mb-20 rounded-b-xl p-6 shadow-lg bg-red-700 text-white font-medium
                             flex justify-between items-center">
-                            <p className="text-xl">Total: {totalPrice}₽</p>
+                            <p className="text-xl">{t("total")}: {totalPrice}₽</p>
                             <button onClick={(): void => checkUser()}
                                     className="flex justify-center gap-8 items-center bg-white w-70 rounded-full py-2 px-4
                              text-red-700 text-2xl cursor-pointer
                              transition delay-150 duration-300 ease-in-out hover:-translate-y-1">
-                                <p className="text-center">Place an order</p>
+                                <p className="text-center">{t("placeOrder")}</p>
                                 <IoIosArrowForward/>
                             </button>
-                            <Modal active={modalActive} setActive={setModalActive} />
+                            <Modal active={modalActive} setActive={setModalActive} navigationPath="/order" />
                         </div>
                     </>
                 ) : <div
                     className="flex justify-center gap-20 items-center bg-white w-250 h-auto m-auto rounded-xl shadow-lg p-8 font-medium text-xl">
-                    <p className="text-neutral-500">Your cart is empty now... Fill it with our yummy pizza!</p>
+                    <p className="text-center text-neutral-500">{t("emptyCartMessage")}</p>
                     <button onClick={() => navigate("/menu")}
-                            className="bg-red-700 text-white rounded-full py-2 px-4 cursor-pointer hover:bg-red-800">Explore
-                        the menu
+                            className="bg-red-700 text-white rounded-full py-2 px-4 cursor-pointer hover:bg-red-800">
+                        {t("toMenuButton")}
                     </button>
                 </div>}
         </div>

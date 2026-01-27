@@ -9,20 +9,23 @@ import AboutPage from "./pages/AboutPage.tsx";
 import OrderPage from "./pages/OrderPage.tsx";
 import Confirmation from "./pages/Confirmation.tsx";
 import Layout from "./components/Layout.tsx";
+import AuthRequired from "./components/AuthRequired.tsx";
 
 function App(): JSX.Element {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="/" element={<Layout />}>
-                    <Route index element={<Home />} />
+                <Route path="/" element={<Layout/>}>
+                    <Route index element={<Home/>}/>
                     <Route path="/about" element={<AboutPage/>}/>
                     <Route path="/menu" element={<Menu/>}/>
                     <Route path="/offers" element={<OffersPage/>}/>
-                    <Route path="/account" element={<Account/>}/>
                     <Route path="/cart" element={<Cart/>}/>
-                    <Route path="/order" element={<OrderPage/>}/>
-                    <Route path="/confirmation" element={<Confirmation/>}/>
+                    <Route element={<AuthRequired/>}>
+                        <Route path="/account" element={<Account/>}/>
+                        <Route path="/order" element={<OrderPage/>}/>
+                        <Route path="/confirmation" element={<Confirmation/>}/>
+                    </Route>
                 </Route>
             </Routes>
         </BrowserRouter>

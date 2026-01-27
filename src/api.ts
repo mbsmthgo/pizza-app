@@ -1,9 +1,17 @@
-import type {Pizza} from "./menu.ts"
+import type {Drink, Ingredient, Pizza} from "./menu.ts"
 
 const baseUrl: string = import.meta.env.VITE_BASE_URL
 
 export async function getPizzas(): Promise<Pizza[]> {
     const res: Response = await fetch(`${baseUrl}/pizza`)
+    return await res.json()
+}
+export async function getDrinks(): Promise<Drink[]> {
+    const res: Response = await fetch(`${baseUrl}/drink`)
+    return await res.json()
+}
+export async function getIngredients(type: "PIZZA" | "DRINK", options: string[]): Promise<Ingredient[]> {
+    const res: Response = await fetch(`${baseUrl}/ingredient/${type}?options=${options.join(",")}`)
     return await res.json()
 }
 

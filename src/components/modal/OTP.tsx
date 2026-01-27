@@ -13,7 +13,7 @@ import {verifyCode} from "../../api.ts";
 import {useDispatch} from "react-redux";
 import {saveUser} from "../../features/user/userSlice.ts";
 
-export default function OTP({email}: { email: string }): JSX.Element {
+export default function OTP({email, navigationPath}: { email: string, navigationPath: string }): JSX.Element {
 
     const inputRefs: RefObject<HTMLInputElement | null>[] = [
         useRef<HTMLInputElement>(null),
@@ -27,6 +27,7 @@ export default function OTP({email}: { email: string }): JSX.Element {
 
     useEffect((): void => {
         inputRefs[0].current?.focus()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const navigate: NavigateFunction = useNavigate()
@@ -52,7 +53,7 @@ export default function OTP({email}: { email: string }): JSX.Element {
         verifyCode(email, codes.join("")).then(result => {
             if (result) {
                 dispatch(saveUser({email: email, code: codes.join("")}))
-                navigate("/order")
+                navigate(navigationPath)
             } else {
                 setErrorMessage("Incorrect code")
             }
@@ -83,7 +84,7 @@ export default function OTP({email}: { email: string }): JSX.Element {
             </div>
             {errorMessage && <p className="text-red-700">{errorMessage}</p>}
             <button disabled={!(codes.every((value: string): boolean => value != ""))}
-                    className={`w-full bg-red-700 rounded-full p-3 text-xl cursor-pointer
+                    className={`w-full bg-red-700 text-white rounded-full p-3 text-xl cursor-pointer
                 ${!(codes.every((value: string): boolean => value != "")) ? "opacity-50" : "opacity-100"}`}>Confirm
             </button>
         </form>

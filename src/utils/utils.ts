@@ -1,25 +1,30 @@
-import type {Ingredient} from "./menu.ts";
+import type {Ingredient} from "../menu.ts";
 
 export const steps: string[] = ["Accepted", "Cooking",
     "Packing", "Delivery", "Delivered"]
 export type AboutFact = {
+    id: number
     factName: string
     factDescription: string
 }
 export const aboutFacts: AboutFact[] = [
     {
+        id: 1,
         factName: "Cheese dominance",
         factDescription: "We travel the world to bring the most amazing cheeses to our pizzeria: from classic Italian mozzarella to bold French dorblu..."
     },
     {
+        id: 2,
         factName: "Premium quality ingredients",
         factDescription: "Savory pepperoni, the freshest shrimp, selected tomatoes and herbs are worthy partners for our main character..."
     },
     {
+        id: 3,
         factName: "Available to everyone",
         factDescription: "From early morning to late evening, our deliverers are ready to give you pleasure in every slice at a very attractive price..."
     }
 ]
+export const months: string[] = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 export function chooseDeliveryTime(): string[] {
     const now = new Date()

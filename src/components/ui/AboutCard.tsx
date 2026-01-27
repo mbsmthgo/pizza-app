@@ -1,5 +1,6 @@
 import type {JSX} from "react"
 import {IoIosArrowForward} from "react-icons/io";
+import {useTranslation} from "react-i18next";
 
 type AboutCardProps = {
     factNum: number
@@ -8,6 +9,7 @@ type AboutCardProps = {
 }
 
 export default function AboutCard({factNum, name, description} : AboutCardProps): JSX.Element {
+    const { t } = useTranslation()
     return (
         <div className="flex flex-col items-start gap-8 bg-white opacity-50 rounded-xl shadow-sm p-8 w-100 h-100 hover:opacity-100 hover:shadow-md
         hover:cursor-pointer transition delay-300 duration-500 ease-in">
@@ -18,7 +20,7 @@ export default function AboutCard({factNum, name, description} : AboutCardProps)
             <h1 className="text-2xl font-medium">{name}</h1>
             <p className="text-neutral-500">{description}</p>
             <button className="flex items-center gap-4 font-medium cursor-pointer">
-                <p>Learn more</p>
+                <p>{t("learnMoreButton")}</p>
                 <IoIosArrowForward/>
             </button>
         </div>
