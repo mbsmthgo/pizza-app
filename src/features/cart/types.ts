@@ -1,3 +1,5 @@
+import type {Ingredient} from "../../menu.ts";
+
 export type CartItem = {
     id: string
     baseId: number
@@ -5,7 +7,7 @@ export type CartItem = {
     photo: string
     size: string
     crust?: string
-    extras: string[]
+    extras: Ingredient[]
     price: number
     quantity: number
 }

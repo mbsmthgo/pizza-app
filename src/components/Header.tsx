@@ -7,7 +7,7 @@ import languages from "../utils/i18n/languages.json"
 
 export default function Header(): JSX.Element {
     const totalQuantity: number = useSelector((state: RootState): number => state.cart.totalQuantity)
-    const [langSwitcher, setLangSwitcher] = useState<boolean>(true)
+    const [langSwitcher, setLangSwitcher] = useState<boolean>(false)
     const { t, i18n } = useTranslation()
 
     const currentLanguage = useMemo(() => {
@@ -19,8 +19,8 @@ export default function Header(): JSX.Element {
     }
     return (
         <header className="flex justify-between items-center p-8">
-            <Link to="/">
-                <img src="src/assets/pizza-logo.png" alt="Pizza Logo" className="w-60 focus:outline-none"/>
+            <Link to="/" className="focus:outline-none">
+                <img src="src/assets/pizza-logo.png" alt="Pizza Logo" className="w-60"/>
             </Link>
             <nav className="mt-10 flex items-baseline gap-16 text-red-700 font-medium pr-8">
                 <Link to="/about">{t("aboutTitle")}</Link>

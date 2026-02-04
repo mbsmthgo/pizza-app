@@ -1,6 +1,7 @@
 import type {PayloadAction} from "@reduxjs/toolkit";
 import {createSlice} from "@reduxjs/toolkit";
 import type {CartItem, CartState} from "./types";
+import type {Ingredient} from "../../menu.ts";
 
 const getInitialState = () => {
     const loadFromStorage = (): CartState => {
@@ -30,13 +31,13 @@ const saveToStorage = (state: CartState) => {
     }
 }
 
-export function generateProductId(baseId: number, size: string, crust: string, extras: string[], type: string): string {
+export function generateProductId(baseId: number, size: string, crust: string, extras: Ingredient[], type: string): string {
     let id: string = `${baseId}_${size}`
     if (type === "pizza") {
        id = `${baseId}_${size}_${crust}`
     }
     if (extras.length > 0) {
-        const sortedExtras = [...extras].sort().join("-")
+        const sortedExtras: string = [...extras].map((extraIng: Ingredient): string => extraIng.name).sort().join("-")
         id = id + `_${sortedExtras}`
     }
     return id

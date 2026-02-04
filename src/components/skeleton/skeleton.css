@@ -1,0 +1,102 @@
+.skeleton-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2em;
+    width: 300px;
+    height: 500px;
+    background-color: white;
+    border-radius: 15px;
+}
+.skeleton-minicard {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 1em;
+    width: 416px;
+    height: 250px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 10px 10px 10px 10px rgba(0, 0, 0, 0.1);
+}
+.skeleton-photo {
+    width: 250px;
+    height: 250px;
+    border-radius: 15px;
+    animation: pulse 4s infinite ease-in-out;
+}
+.skeleton-name {
+    margin-top: 1em;
+    width: 125px;
+    height: 20px;
+    border-radius: 8px;
+    animation: pulse 4s infinite ease-in-out;
+}
+.skeleton-description {
+    margin-top: 1em;
+    width: 250px;
+    height: 40px;
+    border-radius: 8px;
+    animation: pulse 4s infinite ease-in-out;
+}
+.skeleton-price {
+    place-self: end;
+    margin-top: 1em;
+    width: 63px;
+    height: 20px;
+    border-radius: 8px;
+    animation: pulse 4s infinite ease-in-out;
+}
+.skeleton-button {
+    place-self: start;
+    margin-top: 1em;
+    width: 100px;
+    height: 30px;
+    border-radius: 15px;
+    animation: pulse 4s infinite ease-in-out;
+}
+.skeleton-orderNumber {
+    width: 30px;
+    height: 15px;
+    border-radius: 8px;
+    animation: pulse 4s infinite ease-in-out;
+}
+.skeleton-orderTime {
+    margin-top: 0.5em;
+    width: 125px;
+    height: 15px;
+    border-radius: 8px;
+    animation: pulse 4s infinite ease-in-out;
+}
+.skeleton-delivery {
+    margin-top: 1em;
+    width: 80px;
+    height: 15px;
+    border-radius: 8px;
+    animation: pulse 4s infinite ease-in-out;
+}
+.skeleton-deliveryAddress {
+    margin-top: 0.5em;
+    width: 300px;
+    height: 30px;
+    border-radius: 8px;
+    animation: pulse 4s infinite ease-in-out;
+}
+.skeleton-product {
+    margin-top: 1em;
+    width: 80px;
+    height: 80px;
+    border-radius: 15px;
+    animation: pulse 4s infinite ease-in-out;
+}
+@keyframes pulse {
+    0% {
+        background-color: #d4d4d4;
+    }
+    50% {
+        background-color: #e5e5e5;
+    }
+    100% {
+        background-color: #d4d4d4;
+    }
+}

@@ -52,7 +52,7 @@ export default function OTP({email, navigationPath}: { email: string, navigation
         e.preventDefault()
         verifyCode(email, codes.join("")).then(result => {
             if (result) {
-                dispatch(saveUser({email: email, code: codes.join("")}))
+                dispatch(saveUser({email: email, code: codes.join(""), name: "", birthDate: {day: 0, month: {name: "", order: 0}, year: 0}}))
                 navigate(navigationPath)
             } else {
                 setErrorMessage("Incorrect code")

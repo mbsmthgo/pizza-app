@@ -2,7 +2,7 @@ import {type JSX, useState} from "react"
 import {useSelector} from "react-redux";
 import type {RootState} from "../store.ts";
 import type {User} from "../features/user/types.ts";
-import { Outlet} from "react-router";
+import {Outlet} from "react-router";
 import Modal from "./modal/Modal.tsx";
 
 export default function AuthRequired(): JSX.Element {

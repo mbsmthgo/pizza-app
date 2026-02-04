@@ -9,6 +9,7 @@ import {useNavigate} from "react-router";
 import Modal from "../components/modal/Modal.tsx";
 import type {User} from "../features/user/types.ts";
 import {useTranslation} from "react-i18next";
+import type {Ingredient} from "../menu.ts";
 
 export default function Cart(): JSX.Element {
 
@@ -76,7 +77,8 @@ export default function Cart(): JSX.Element {
                                                 <h1 className="text-xl">{pizza.name}</h1>
                                                 <div className="flex flex-col gap-2">
                                                     <p className="text-neutral-500">{pizza.size}{pizza.crust ? "," : ""} {pizza.crust}</p>
-                                                    <p className="text-neutral-500">{pizza.extras.length !== 0 ? "+" : ""} {pizza.extras.join(", ")}</p>
+                                                    <p className="text-neutral-500">{pizza.extras.length !== 0 ? "+ " : ""}
+                                                        {pizza.extras.map((extraIng: Ingredient): string => extraIng.name).join(", ")}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -104,11 +106,11 @@ export default function Cart(): JSX.Element {
                                     setPromo(e.target.value)
                                     if (showDiscount) setShowDiscount(false)
                                 }}
-                                       className="w-75 text-xl focus:outline-none"
+                                       className="w-full text-xl focus:outline-none"
                                        type="text" placeholder={t("promo")}/>
                                 {promo.length > 0 ?
                                     <button onClick={() => checkPromo(promo)}
-                                            className="ml-20 text-red-700 cursor-pointer">{t("apply")}</button> : null}
+                                            className="mt-2 text-red-700 cursor-pointer">{t("apply")}</button> : null}
                                 {showDiscount ? <p
                                     className="mt-2 text-neutral-500">{discountMessage}</p> : null}
 

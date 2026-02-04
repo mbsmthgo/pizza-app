@@ -41,7 +41,7 @@
   "deliveryAddress": "Адрес доставки",
   "deliveryTime": "Время доставки",
   "quickly": "Побыстрее",
-  "chooseTime": "Выбрать время",
+  "chooseTime": "Выбрать",
   "payment": "Способ оплаты",
   "fact.1.name": "Преобладание сыра",
   "fact.2.name": "Ингредиенты премиум качества",
@@ -63,13 +63,19 @@
   "card": "Картой онлайн",
   "cash": "Наличными",
   "watchOrderProcess": "Отслеживайте готовность Вашего заказа",
-  "orderAccepted": "Заказ №1 принят",
+  "orderAccepted": "Заказ №{{count}} принят",
   "step.accepted": "Принят",
   "step.cooking": "Готовим",
   "step.packing": "Собираем",
-  "step.delivery": "Доставляем",
+  "step.delivering": "Доставляем",
   "step.delivered": "Доставлен",
   "product": "товар",
-  "products": "товара"
+  "products": "товара",
+  "comment": "Комментарий",
+  "logout": "Выйти",
+  "birthdayMessage": "Мы сделаем подарок на День рождения. К сожалению, дату рождения изменить нельзя",
+  "change": "Изменить",
+  "save": "Сохранить",
+  "checkDay": "Проверьте день Вашего рождения!"
 
 }

@@ -4,9 +4,11 @@ import {useDispatch, useSelector} from "react-redux";
 import type {RootState} from "../store.ts"
 import type {CartItem} from "../features/cart/types.ts";
 import {chooseDeliveryTime} from "../utils/utils.ts";
-import {cleanCart} from "../features/cart/cartSlice.ts";
-import {saveOrder} from "../features/order/orderSlice.ts";
 import {useTranslation} from "react-i18next";
+import {placeOrder} from "../api.ts";
+import type {User} from "../features/user/types.ts";
+import type {Ingredient} from "../menu.ts";
+import {cleanCart} from "../features/cart/cartSlice.ts";
 
 export default function OrderPage(): JSX.Element {
 
@@ -19,6 +21,7 @@ export default function OrderPage(): JSX.Element {
         phoneNumber: "",
         deliveryAddress: "",
         deliveryTime: "",
+        comment: "",
         paymentMethod: ""
     })
 
@@ -31,16 +34,30 @@ export default function OrderPage(): JSX.Element {
 
     const dispatch = useDispatch()
 
+    const user: User = useSelector((state: RootState): User => state.user)
+
     const { t } = useTranslation()
 
     function handleFormSubmit(e: FormEvent): void {
         e.preventDefault()
         setUserInfo({...userInfo, deliveryTime: delivery, paymentMethod: payment})
-        dispatch(saveOrder({orderNumber: 1, date: new Date().toLocaleString(), deliveryTime: delivery,
-            address: userInfo.deliveryAddress, items: orderItems, price: orderPrice}))
+        const orderPizzas = orderItems.map(orderItem => (
+            {
+                id: orderItem.baseId,
+                options: orderItem.extras.map(extraIng => extraIng.id),
+                size: orderItem.size,
+                type: orderItem.crust
+            }
+        ))
+        const orderObj = {
+            name: userInfo.name,
+            phone: userInfo.phoneNumber,
+            address: userInfo.deliveryAddress,
+            comment: userInfo.comment,
+            pizzas: orderPizzas
+        }
+        placeOrder(orderObj, user).then(data => navigate(`/confirmation/${data.id}`))
         dispatch(cleanCart())
-        navigate("/confirmation", {state: {userInfo: userInfo, orderDetails: {orderItems: orderItems,
-                orderQuantity: orderQuantity, orderPrice: orderPrice}}})
     }
 
     return (
@@ -111,8 +128,16 @@ export default function OrderPage(): JSX.Element {
                             </div>
                         </div>
                     </div>
-
-                    <h2 className="mb-8 text-red-700 text-2xl">{t("payment")}</h2>
+                    <div className="flex justify-start gap-8 items-start">
+                        <p className="w-50">{t("comment")}</p>
+                        <label htmlFor="comment">
+                    <textarea value={userInfo.comment} id="comment"
+                              onChange={(e): void => setUserInfo({...userInfo, comment: e.target.value})}
+                              placeholder={t("comment")} className="bg-neutral-100 rounded-2xl w-80 h-20
+                    focus:outline-none placeholder:text-neutral-300 py-2 px-4 resize-none"/>
+                        </label>
+                    </div>
+                    <h2 className="mt-2 mb-8 text-red-700 text-2xl">{t("payment")}</h2>
                     <div
                         className="flex justify-center items-center gap-2 bg-white rounded-xl shadow-md w-100 h-20 p-2 text-lg">
                         <button type="button"
@@ -139,10 +164,11 @@ export default function OrderPage(): JSX.Element {
                                 className="w-60 bg-neutral-200 rounded-full text-neutral-500 p-3 cursor-pointer
                                 hover:bg-neutral-300">{t("backToCart")}
                         </button>
-                        <button disabled={userInfo.name === "" || userInfo.phoneNumber === "" || userInfo.deliveryAddress === ""}
+                        <button
+                            disabled={userInfo.name === "" || userInfo.phoneNumber === "" || userInfo.deliveryAddress === ""}
                             className={`w-60 bg-red-700 rounded-full text-white p-3 cursor-pointer
                             ${(userInfo.name === "" || userInfo.phoneNumber === "" || userInfo.deliveryAddress === "") ?
-                            "opacity-50" : "opacity-100"}`}>
+                                "opacity-50" : "opacity-100"}`}>
                             {t("toOrder")}
                         </button>
                     </div>
@@ -160,7 +186,7 @@ export default function OrderPage(): JSX.Element {
                         </div>
                         <div className="text-neutral-500">
                             <p>{item.size}{item.crust ? "," : ""} {item.crust}</p>
-                            <p>{item.extras.join(", ")}</p>
+                            <p>{item.extras.length > 0 ? "+" : ""} {item.extras.map((extraIng: Ingredient): string => extraIng.name).join(", ")}</p>
                         </div>
                     </div>
                 ))}

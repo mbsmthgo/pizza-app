@@ -24,7 +24,7 @@ function App(): JSX.Element {
                     <Route element={<AuthRequired/>}>
                         <Route path="/account" element={<Account/>}/>
                         <Route path="/order" element={<OrderPage/>}/>
-                        <Route path="/confirmation" element={<Confirmation/>}/>
+                        <Route path="/confirmation/:id" element={<Confirmation/>}/>
                     </Route>
                 </Route>
             </Routes>

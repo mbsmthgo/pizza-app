@@ -1,7 +1,54 @@
 import type {Ingredient} from "../menu.ts";
 
+export type OrderResIngredient = {
+    allowedOptions: string[]
+    id: number
+    name: string
+    photo: string
+    price: number
+    type: string
+}
+
+export type OrderResPizzaItem = {
+    id: number
+    name: string
+    photo: string
+    price: number
+    options: OrderResIngredient[]
+    size: string
+    type: string
+}
+
+export type OrderResponse = {
+    id: number
+    name: string
+    phone: string
+    address: string
+    comment: string
+    pizzas: OrderResPizzaItem[]
+    price: number
+    createdAt: string
+    deliveredAt: string
+    status: string
+}
+
+export type OrderPizza = {
+    id: number
+    options: number[]
+    size: string
+    type?: string
+}
+
+export type OrderObj = {
+    name: string
+    phone: string
+    address: string
+    comment?: string
+    pizzas: OrderPizza[]
+}
+
 export const steps: string[] = ["Accepted", "Cooking",
-    "Packing", "Delivery", "Delivered"]
+    "Packing", "Delivering", "Delivered"]
 export type AboutFact = {
     id: number
     factName: string
@@ -65,16 +112,14 @@ export function chooseDeliveryTime(): string[] {
     return deliveryIntervals
 }
 
-export function handleAddExtra(arrayOfExtras: string[], ingredient: Ingredient,
-                               saveArray: (value: string[] | ((prev: string[]) => string[])) => void
+export function handleAddExtra(arrayOfExtras: Ingredient[], ingredient: Ingredient,
+                               saveArray: (value: Ingredient[] | ((prev: Ingredient[]) => Ingredient[])) => void
 ): void {
-    if (!arrayOfExtras.includes(ingredient.name)) {
-        saveArray((prev: string[]): string[] => [...prev, ingredient.name])
-    } else {
-        const index: number = arrayOfExtras.indexOf(ingredient.name)
-        const arrCopy: string[] = [...arrayOfExtras]
-        arrCopy.splice(index, 1)
-        saveArray(arrCopy)
+    const existingIndex: number = arrayOfExtras.findIndex((item: Ingredient): boolean => item.id === ingredient.id)
+    if (existingIndex === -1) {
+        saveArray((prev: Ingredient[]): Ingredient[] => [...prev, ingredient])
+    } else if (existingIndex !== -1) {
+        saveArray((prev: Ingredient[]): Ingredient[] => prev.filter((item: Ingredient): boolean => item.id !== ingredient.id))
     }
 }
 

@@ -20,6 +20,7 @@
     align-items: center;
     margin-bottom: 5px;
     z-index: 2;
+    transition: background-color 0.3s ease;
 }
 .step-name {
     font-size: 16px;
@@ -41,14 +42,25 @@
     height: 10px;
     background-color: #e5e5e5;
     overflow: hidden;
+    border-radius: 5px;
 }
 .progress {
     height: 100%;
     position: absolute;
     border-radius: 50px;
-    background: linear-gradient(45deg, #c10007, #ffe2e2);
-    left: -25%;
+    background: #c10007;
+    left: 0;
     animation: load 2s infinite ease-out;
+    transition: width 0.5s ease;
+}
+.progress-completed {
+    height: 100%;
+    position: absolute;
+    border-radius: 50px;
+    background: #c10007;
+    left: 0;
+    animation: none;
+    transition: width 0.5s ease;
 }
 @keyframes load {
     0% {
