@@ -1,4 +1,4 @@
-![Cheese Heaven Preview](./preview.jpg)
+![Cheese Heaven Preview](./preview.png)
 
 # 🍕 Cheese Heaven – Pizza Delivery Web App
 
