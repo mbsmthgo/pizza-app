@@ -1,73 +1,43 @@
-# React + TypeScript + Vite
+# 🍕 Cheese Heaven – Pizza Delivery Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, high-performance, and fully responsive e-commerce web application for a pizza delivery service. Built using the latest frontend stack, featuring multi-language support and global state management.
 
-Currently, two official plugins are available:
+## 🛠️ Tech Stack & Architecture
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project is built from scratch utilizing modern web development practices:
 
-## React Compiler
+* **Core:** React 19, TypeScript, Vite (Next-generation frontend tooling)
+* **State Management:** Redux Toolkit (`@reduxjs/toolkit`) & React Redux for smooth cart data flow and order state
+* **Styling:** Tailwind CSS v4 (`@tailwindcss/vite`) for a fully custom, utility-first adaptive design
+* **Internationalization (i18n):** `i18next` & `react-i18next` with automatic browser language detection
+* **Routing:** React Router v7 for seamless single-page navigation
+* **Code Quality:** ESLint 9 & TypeScript-ESLint for strict code linting and type-safety
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## ✨ Key Features
 
-## Expanding the ESLint configuration
+* **Advanced Cart System:** Dynamic item calculation, real-time total price updates, and persistent state management powered by Redux.
+* **Seamless i18n Localization:** Fully translated English/Russian UI switcher utilizing browser language detection.
+* **Modern UI/UX:** Clean, elegant layout with adaptive components optimized for both desktop and mobile views.
+* **Strict Type Safety:** Comprehensive TypeScript integration ensuring robust architecture and bug-free production builds.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Getting Started (Local Run)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Follow these steps to run the project locally on your machine:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/mbsmthgo/pizza-app
+   ```
+2. **Navigate to the project folder:**
+   ```bash
+   cd pizza
+   ```
+3. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+4. **Start the development server:**
+   ```bash
+   npm run dev
+   ```
+5. Open `http://localhost:5173` in your browser to view the app.
