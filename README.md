@@ -30,7 +30,7 @@ Follow these steps to run the project locally on your machine:
    ```
 2. **Navigate to the project folder:**
    ```bash
-   cd pizza
+   cd pizza-app
    ```
 3. **Install dependencies:**
    ```bash
