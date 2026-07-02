@@ -1,3 +1,5 @@
+![Cheese Heaven Preview](./preview.jpg)
+
 # 🍕 Cheese Heaven – Pizza Delivery Web App
 
 A modern, high-performance, and fully responsive e-commerce web application for a pizza delivery service. Built using the latest frontend stack, featuring multi-language support and global state management.
